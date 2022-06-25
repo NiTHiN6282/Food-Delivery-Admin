@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fooddeliveryadmin/pages/food_details.dart';
 import 'package:fooddeliveryadmin/pages/foodlistpage.dart';
 import 'package:fooddeliveryadmin/screens/home.dart';
 
@@ -13,7 +14,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: FoodListPage(),
+      home: FoodDetails(),
     );
   }
 }
