@@ -1,0 +1,6 @@
+package com.psuedocoders.fooddeliveryadmin
+
+import io.flutter.embedding.android.FlutterActivity
+
+class MainActivity: FlutterActivity() {
+}
