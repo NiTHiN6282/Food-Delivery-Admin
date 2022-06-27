@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:fooddeliveryadmin/screens/food.dart';
+
 class Home extends StatelessWidget {
   const Home({Key? key}) : super(key: key);
 
@@ -14,15 +16,24 @@ class Home extends StatelessWidget {
           width: scrWid,
           child: ListView(
             children: [
-              Container(
-                margin:
-                    EdgeInsets.only(left: 20, right: 20, top: 10, bottom: 10),
-                color: Colors.grey[400],
-                child: ListTile(
-                  leading: Icon(Icons.food_bank_rounded),
-                  title: Text(
-                    "Food",
-                    style: TextStyle(color: Colors.blue),
+              InkWell(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => Food(),
+                      ));
+                },
+                child: Container(
+                  margin:
+                      EdgeInsets.only(left: 20, right: 20, top: 10, bottom: 10),
+                  color: Colors.grey[400],
+                  child: ListTile(
+                    leading: Icon(Icons.food_bank_rounded),
+                    title: Text(
+                      "Food",
+                      style: TextStyle(color: Colors.blue),
+                    ),
                   ),
                 ),
               ),

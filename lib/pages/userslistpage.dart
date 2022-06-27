@@ -11,22 +11,21 @@ class _UsersListPageState extends State<UsersListPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-
-      ),
+      appBar: AppBar(),
       body: Container(
         child: ListView.builder(
           itemCount: 4,
           itemBuilder: (context, index) {
             return Card(
               child: ListTile(
-                leading: Text("${index+1}"),
+                leading: Text("${index + 1}"),
                 title: Text("Akhil"),
                 subtitle: Text("1234567890"),
                 trailing: Icon(Icons.call),
               ),
             );
-          },),
+          },
+        ),
       ),
     );
   }
