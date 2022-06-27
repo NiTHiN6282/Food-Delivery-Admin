@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:fooddeliveryadmin/datas.dart';
+import 'package:fooddeliveryadmin/data.dart';
 import 'package:fooddeliveryadmin/pages/food/food_details.dart';
 
 class FoodListPage extends StatefulWidget {
@@ -12,6 +12,8 @@ class FoodListPage extends StatefulWidget {
 class _FoodListPageState extends State<FoodListPage> {
   @override
   Widget build(BuildContext context) {
+    double scrHei = MediaQuery.of(context).size.height;
+    double scrWid = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(),
       body: Container(
@@ -34,8 +36,8 @@ class _FoodListPageState extends State<FoodListPage> {
                 child: ListTile(
                   leading: Image.network(
                     foodList[index]['img'],
-                    width: 50,
-                    height: 50,
+                    width: scrWid / 5,
+                    height: scrHei / 12,
                     fit: BoxFit.cover,
                   ),
                   title: Text(foodList[index]['name']),

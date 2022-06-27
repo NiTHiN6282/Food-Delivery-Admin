@@ -11,7 +11,7 @@ class AddFood extends StatefulWidget {
 }
 
 class _AddFoodState extends State<AddFood> {
-  late File imageFile;
+  File? imageFile;
   TextEditingController itemNameController = TextEditingController();
   TextEditingController itemDescController = TextEditingController();
   TextEditingController itemPriceController = TextEditingController();
@@ -34,7 +34,7 @@ class _AddFoodState extends State<AddFood> {
                   child: Text("Add Item"),
                 ),
                 SizedBox(
-                  height: 50,
+                  height: scrHei / 15,
                 ),
                 Container(
                   width: scrWid / 1.3,
@@ -48,7 +48,7 @@ class _AddFoodState extends State<AddFood> {
                   ),
                 ),
                 SizedBox(
-                  height: 50,
+                  height: scrHei / 15,
                 ),
                 Container(
                   width: scrWid / 1.3,
@@ -62,7 +62,7 @@ class _AddFoodState extends State<AddFood> {
                   ),
                 ),
                 SizedBox(
-                  height: 50,
+                  height: scrHei / 15,
                 ),
                 Container(
                   width: scrWid / 1.3,
@@ -78,7 +78,7 @@ class _AddFoodState extends State<AddFood> {
                   ),
                 ),
                 SizedBox(
-                  height: 50,
+                  height: scrHei / 15,
                 ),
                 InkWell(
                   onTap: () async {
@@ -99,7 +99,7 @@ class _AddFoodState extends State<AddFood> {
                             borderRadius: BorderRadius.circular(12),
                           ),
                           child: Image.file(
-                            imageFile,
+                            imageFile!,
                             fit: BoxFit.cover,
                           ),
                         )
@@ -116,7 +116,7 @@ class _AddFoodState extends State<AddFood> {
                             children: [
                               Icon(Icons.image),
                               SizedBox(
-                                width: 10,
+                                width: scrWid / 18,
                               ),
                               Text("Add Image"),
                             ],
@@ -124,12 +124,12 @@ class _AddFoodState extends State<AddFood> {
                         ),
                 ),
                 SizedBox(
-                  height: 70,
+                  height: scrHei / 10,
                 ),
                 Container(
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
-                    color: Colors.blueGrey[200],
+                    color: Colors.blue[100],
                     borderRadius: BorderRadius.circular(12),
                   ),
                   width: scrWid / 2,
@@ -139,7 +139,7 @@ class _AddFoodState extends State<AddFood> {
                     children: [
                       Icon(Icons.add),
                       SizedBox(
-                        width: 10,
+                        width: scrWid / 18,
                       ),
                       Text("Add Item"),
                     ],
