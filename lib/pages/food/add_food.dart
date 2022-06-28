@@ -2,6 +2,8 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -16,6 +18,7 @@ class _AddFoodState extends State<AddFood> {
   dynamic url;
   dynamic foodid;
   File? imageFile;
+  bool recommend = false;
   TextEditingController itemNameController = TextEditingController();
   TextEditingController itemRatingController = TextEditingController();
   TextEditingController itemDescController = TextEditingController();
@@ -38,10 +41,11 @@ class _AddFoodState extends State<AddFood> {
         body: SingleChildScrollView(
           physics: BouncingScrollPhysics(),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Container(
-                width: scrWid,
-                height: scrHei,
+                alignment: Alignment.center,
+                padding: EdgeInsets.only(top: 10, bottom: 10),
                 child: Form(
                   key: _addproductFormKey,
                   child: Column(
@@ -65,7 +69,7 @@ class _AddFoodState extends State<AddFood> {
                         ),
                       ),
                       SizedBox(
-                        height: scrHei / 15,
+                        height: scrHei / 30,
                       ),
                       Container(
                         width: scrWid / 1.3,
@@ -79,7 +83,7 @@ class _AddFoodState extends State<AddFood> {
                         ),
                       ),
                       SizedBox(
-                        height: scrHei / 15,
+                        height: scrHei / 30,
                       ),
                       Container(
                         width: scrWid / 1.3,
@@ -95,7 +99,7 @@ class _AddFoodState extends State<AddFood> {
                         ),
                       ),
                       SizedBox(
-                        height: scrHei / 15,
+                        height: scrHei / 30,
                       ),
                       Container(
                         width: scrWid / 1.3,
@@ -109,7 +113,7 @@ class _AddFoodState extends State<AddFood> {
                         ),
                       ),
                       SizedBox(
-                        height: scrHei / 15,
+                        height: scrHei / 30,
                       ),
                       InkWell(
                         onTap: () async {
@@ -157,7 +161,32 @@ class _AddFoodState extends State<AddFood> {
                               ),
                       ),
                       SizedBox(
-                        height: scrHei / 10,
+                        height: scrHei / 30,
+                      ),
+                      StreamBuilder<QuerySnapshot>(
+                          stream: null,
+                          builder: (context, snapshot) {
+                            return Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text("Recommended :"),
+                                CupertinoSwitch(
+                                    dragStartBehavior: DragStartBehavior.start,
+                                    value: recommend,
+                                    onChanged: (value) {
+                                      setState(() {
+                                        if (value == false) {
+                                          recommend = value;
+                                        } else {
+                                          recommend = value;
+                                        }
+                                      });
+                                    }),
+                              ],
+                            );
+                          }),
+                      SizedBox(
+                        height: scrHei / 30,
                       ),
                       GestureDetector(
                         onTap: () {
@@ -180,6 +209,7 @@ class _AddFoodState extends State<AddFood> {
                                     .collection('foods')
                                     .doc(foodid)
                                     .set({
+                                  "recommended": recommend,
                                   "name": itemNameController.text,
                                   "description": itemDescController.text,
                                   "price": itemPriceController.text,

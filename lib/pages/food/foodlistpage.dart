@@ -46,6 +46,7 @@ class _FoodListPageState extends State<FoodListPage> {
                                 price: snapshot.data!.docs[index]['price'],
                                 foodid: snapshot.data!.docs[index]['foodid'],
                                 rating: snapshot.data!.docs[index]['rating'],
+                                itemIndex: index,
                               ),
                             ));
                         print(snapshot.data!.docs[index]['rating']);

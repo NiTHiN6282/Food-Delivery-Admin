@@ -1,4 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/gestures.dart';
+
 import 'package:flutter/material.dart';
 
 class FoodDetails extends StatefulWidget {
@@ -8,6 +11,7 @@ class FoodDetails extends StatefulWidget {
   String desc;
   String foodid;
   String rating;
+  int itemIndex;
 
   FoodDetails({
     Key? key,
@@ -17,6 +21,7 @@ class FoodDetails extends StatefulWidget {
     required this.price,
     required this.foodid,
     required this.rating,
+    required this.itemIndex,
   }) : super(key: key);
 
   @override
@@ -92,6 +97,67 @@ class _FoodDetailsState extends State<FoodDetails> {
                       child: Icon(Icons.done_rounded)),
                 ],
               ),
+              SizedBox(
+                height: 60,
+              ),
+              StreamBuilder<QuerySnapshot>(
+                  stream: FirebaseFirestore.instance
+                      .collection('foods')
+                      .snapshots(),
+                  builder: (context, snapshot) {
+                    if (!snapshot.hasData) {
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    } else {
+                      return Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text("Recommend :"),
+                          // ElevatedButton(
+                          //     onPressed: () {
+                          //       {
+                          //         setState(() {
+                          //           if (snapshot.data!.docs[widget.itemIndex]
+                          //                   ['recommended'] ==
+                          //               true) {
+                          //             FirebaseFirestore.instance
+                          //                 .collection("foods")
+                          //                 .doc(widget.foodid)
+                          //                 .update({"recommended": false});
+                          //           } else {
+                          //             FirebaseFirestore.instance
+                          //                 .collection("foods")
+                          //                 .doc(widget.foodid)
+                          //                 .update({"recommended": true});
+                          //           }
+                          //         });
+                          //       }
+                          //     },
+                          //     child: Text("recom")),
+                          CupertinoSwitch(
+                              dragStartBehavior: DragStartBehavior.start,
+                              value: snapshot.data!.docs[widget.itemIndex]
+                                  ['recommended'],
+                              onChanged: (value) {
+                                setState(() {
+                                  if (value == false) {
+                                    FirebaseFirestore.instance
+                                        .collection("foods")
+                                        .doc(widget.foodid)
+                                        .update({"recommended": value});
+                                  } else {
+                                    FirebaseFirestore.instance
+                                        .collection("foods")
+                                        .doc(widget.foodid)
+                                        .update({"recommended": value});
+                                  }
+                                });
+                              }),
+                        ],
+                      );
+                    }
+                  })
             ],
           ),
         ),
