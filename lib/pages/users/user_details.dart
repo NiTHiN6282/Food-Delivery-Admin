@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class UserDetails extends StatefulWidget {
   String name;
   String address;
-  int phone;
+  String phone;
   UserDetails(
       {Key? key,
       required this.address,

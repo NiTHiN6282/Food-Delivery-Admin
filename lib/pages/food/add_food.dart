@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -11,10 +13,20 @@ class AddFood extends StatefulWidget {
 }
 
 class _AddFoodState extends State<AddFood> {
+  dynamic url;
+  dynamic foodid;
   File? imageFile;
   TextEditingController itemNameController = TextEditingController();
+  TextEditingController itemRatingController = TextEditingController();
   TextEditingController itemDescController = TextEditingController();
   TextEditingController itemPriceController = TextEditingController();
+  final _addproductFormKey = GlobalKey<FormState>();
+
+  @override
+  void initState() {
+    foodid = DateTime.now().toString();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -23,90 +35,170 @@ class _AddFoodState extends State<AddFood> {
     return SafeArea(
       child: Scaffold(
         resizeToAvoidBottomInset: false,
-        body: Container(
-          width: scrWid,
-          height: scrHei,
-          child: Form(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(
-                  child: Text("Add Item"),
-                ),
-                SizedBox(
-                  height: scrHei / 15,
-                ),
-                Container(
-                  width: scrWid / 1.3,
-                  height: scrHei / 15,
-                  child: TextFormField(
-                    controller: itemNameController,
-                    decoration: InputDecoration(
-                        hintText: "Item Name",
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12))),
-                  ),
-                ),
-                SizedBox(
-                  height: scrHei / 15,
-                ),
-                Container(
-                  width: scrWid / 1.3,
-                  height: scrHei / 15,
-                  child: TextFormField(
-                    controller: itemDescController,
-                    decoration: InputDecoration(
-                        hintText: "Item Description",
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12))),
-                  ),
-                ),
-                SizedBox(
-                  height: scrHei / 15,
-                ),
-                Container(
-                  width: scrWid / 1.3,
-                  height: scrHei / 15,
-                  child: TextFormField(
-                    controller: itemPriceController,
-                    decoration: InputDecoration(
-                      hintText: "Item Price",
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
+        body: SingleChildScrollView(
+          physics: BouncingScrollPhysics(),
+          child: Column(
+            children: [
+              Container(
+                width: scrWid,
+                height: scrHei,
+                child: Form(
+                  key: _addproductFormKey,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        child: Text("Add Item"),
                       ),
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  height: scrHei / 15,
-                ),
-                InkWell(
-                  onTap: () async {
-                    XFile? pickedFile = await ImagePicker()
-                        .pickImage(source: ImageSource.gallery);
-                    if (pickedFile != null) {
-                      setState(() {
-                        imageFile = File(pickedFile.path);
-                      });
-                    }
-                  },
-                  child: imageFile != null
-                      ? Container(
-                          width: scrWid / 2,
-                          height: scrHei / 5,
-                          decoration: BoxDecoration(
-                            color: Colors.blueGrey[100],
-                            borderRadius: BorderRadius.circular(12),
+                      SizedBox(
+                        height: scrHei / 15,
+                      ),
+                      Container(
+                        width: scrWid / 1.3,
+                        height: scrHei / 15,
+                        child: TextFormField(
+                          controller: itemNameController,
+                          decoration: InputDecoration(
+                              hintText: "Item Name",
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(12))),
+                        ),
+                      ),
+                      SizedBox(
+                        height: scrHei / 15,
+                      ),
+                      Container(
+                        width: scrWid / 1.3,
+                        height: scrHei / 15,
+                        child: TextFormField(
+                          controller: itemDescController,
+                          decoration: InputDecoration(
+                              hintText: "Item Description",
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(12))),
+                        ),
+                      ),
+                      SizedBox(
+                        height: scrHei / 15,
+                      ),
+                      Container(
+                        width: scrWid / 1.3,
+                        height: scrHei / 15,
+                        child: TextFormField(
+                          controller: itemPriceController,
+                          decoration: InputDecoration(
+                            hintText: "Item Price",
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
                           ),
-                          child: Image.file(
-                            imageFile!,
-                            fit: BoxFit.cover,
-                          ),
-                        )
-                      : Container(
+                        ),
+                      ),
+                      SizedBox(
+                        height: scrHei / 15,
+                      ),
+                      Container(
+                        width: scrWid / 1.3,
+                        height: scrHei / 15,
+                        child: TextFormField(
+                          controller: itemRatingController,
+                          decoration: InputDecoration(
+                              hintText: "Item Rating",
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(12))),
+                        ),
+                      ),
+                      SizedBox(
+                        height: scrHei / 15,
+                      ),
+                      InkWell(
+                        onTap: () async {
+                          XFile? pickedFile = await ImagePicker()
+                              .pickImage(source: ImageSource.gallery);
+                          if (pickedFile != null) {
+                            setState(() {
+                              imageFile = File(pickedFile.path);
+                            });
+                          }
+                        },
+                        child: imageFile != null
+                            ? ClipRRect(
+                                borderRadius: BorderRadius.circular(12),
+                                child: Container(
+                                  width: scrWid / 2,
+                                  height: scrHei / 5,
+                                  decoration: BoxDecoration(
+                                    color: Colors.blueGrey[100],
+                                  ),
+                                  child: Image.file(
+                                    imageFile!,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                              )
+                            : Container(
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                  color: Colors.blueGrey[100],
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                width: scrWid / 2,
+                                height: scrHei / 13,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(Icons.image),
+                                    SizedBox(
+                                      width: scrWid / 18,
+                                    ),
+                                    Text("Add Image"),
+                                  ],
+                                ),
+                              ),
+                      ),
+                      SizedBox(
+                        height: scrHei / 10,
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          print("Add Clicked");
+                          if (imageFile == null) {
+                            showsnackbar("Add  image");
+                          } else if (_addproductFormKey.currentState!
+                              .validate()) {
+                            String fileName = DateTime.now().toString();
+
+                            var ref = FirebaseStorage.instance
+                                .ref()
+                                .child('foods/$fileName');
+
+                            UploadTask uploadTask =
+                                ref.putFile(File(imageFile!.path));
+                            uploadTask.then((res) async {
+                              url = (await ref.getDownloadURL()).toString();
+                            }).then((value) => FirebaseFirestore.instance
+                                    .collection('foods')
+                                    .doc(foodid)
+                                    .set({
+                                  "name": itemNameController.text,
+                                  "description": itemDescController.text,
+                                  "price": itemPriceController.text,
+                                  "image": url,
+                                  "foodid": foodid,
+                                  "fileName": fileName,
+                                  "rating": itemRatingController.text,
+                                  "status": 1,
+                                  "date": DateTime.now().toString(),
+                                }).then((value) {
+                                  showsnackbar("Product Added Successfully");
+                                  Navigator.pop(context);
+                                }));
+                          }
+                        },
+                        child: Container(
                           alignment: Alignment.center,
                           decoration: BoxDecoration(
-                            color: Colors.blueGrey[100],
+                            color: Colors.blue[100],
                             borderRadius: BorderRadius.circular(12),
                           ),
                           width: scrWid / 2,
@@ -114,42 +206,32 @@ class _AddFoodState extends State<AddFood> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Icon(Icons.image),
+                              Icon(Icons.add),
                               SizedBox(
                                 width: scrWid / 18,
                               ),
-                              Text("Add Image"),
+                              Text("Add Item"),
                             ],
                           ),
                         ),
-                ),
-                SizedBox(
-                  height: scrHei / 10,
-                ),
-                Container(
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                    color: Colors.blue[100],
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  width: scrWid / 2,
-                  height: scrHei / 13,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(Icons.add),
-                      SizedBox(
-                        width: scrWid / 18,
                       ),
-                      Text("Add Item"),
                     ],
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),
     );
+  }
+
+  showsnackbar(String msg) {
+    final snackBar = SnackBar(
+      content: Text(msg),
+      backgroundColor: Colors.blue,
+    );
+
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 }

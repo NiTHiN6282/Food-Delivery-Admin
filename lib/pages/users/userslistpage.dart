@@ -1,5 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:fooddeliveryadmin/data.dart';
+
 import 'package:fooddeliveryadmin/pages/users/user_details.dart';
 
 class UsersListPage extends StatefulWidget {
@@ -15,32 +16,43 @@ class _UsersListPageState extends State<UsersListPage> {
     return Scaffold(
       appBar: AppBar(),
       body: Container(
-        child: ListView.builder(
-          itemCount: userList.length,
-          itemBuilder: (context, index) {
-            return InkWell(
-              onTap: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => UserDetails(
-                        address: userList[index]['address'],
-                        name: userList[index]['name'],
-                        phone: userList[index]['phone'],
+        child: StreamBuilder<QuerySnapshot>(
+            stream: FirebaseFirestore.instance
+                .collection("user")
+                .where("usertype", isEqualTo: "user")
+                .snapshots(),
+            builder: (context, snapshot) {
+              return ListView.builder(
+                itemCount: snapshot.data!.docs.length,
+                itemBuilder: (context, index) {
+                  return InkWell(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => UserDetails(
+                              address: snapshot.data!.docs[index]['address'],
+                              name: snapshot.data!.docs[index]['name'],
+                              phone: snapshot.data!.docs[index]['phone'],
+                            ),
+                          ));
+                    },
+                    child: Card(
+                      child: ListTile(
+                        leading: Text("${index + 1}"),
+                        title: Text(
+                          snapshot.data!.docs[index]['name'],
+                        ),
+                        subtitle: Text(
+                          snapshot.data!.docs[index]['phone'],
+                        ),
+                        trailing: Icon(Icons.call),
                       ),
-                    ));
-              },
-              child: Card(
-                child: ListTile(
-                  leading: Text("${index + 1}"),
-                  title: Text(userList[index]['name']),
-                  subtitle: Text(userList[index]['phone'].toString()),
-                  trailing: Icon(Icons.call),
-                ),
-              ),
-            );
-          },
-        ),
+                    ),
+                  );
+                },
+              );
+            }),
       ),
     );
   }

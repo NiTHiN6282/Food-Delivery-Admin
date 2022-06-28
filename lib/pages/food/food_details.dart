@@ -1,18 +1,23 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class FoodDetails extends StatefulWidget {
   String name;
   String img;
-  int price;
+  String price;
   String desc;
+  String foodid;
+  String rating;
 
-  FoodDetails(
-      {Key? key,
-      required this.desc,
-      required this.img,
-      required this.name,
-      required this.price})
-      : super(key: key);
+  FoodDetails({
+    Key? key,
+    required this.desc,
+    required this.img,
+    required this.name,
+    required this.price,
+    required this.foodid,
+    required this.rating,
+  }) : super(key: key);
 
   @override
   State<FoodDetails> createState() => _FoodDetailsState();
@@ -56,6 +61,37 @@ class _FoodDetailsState extends State<FoodDetails> {
                 height: 20,
               ),
               Text("Description: ${widget.desc.toString()}"),
+              SizedBox(
+                height: 20,
+              ),
+              Text("Rating: ${widget.rating.toString()}"),
+              SizedBox(
+                height: 60,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  InkWell(
+                      onTap: () {
+                        FirebaseFirestore.instance
+                            .collection('foods')
+                            .doc(widget.foodid)
+                            .update({"status": 0});
+                      },
+                      child: Icon(Icons.close_rounded)),
+                  SizedBox(
+                    width: 50,
+                  ),
+                  InkWell(
+                      onTap: () {
+                        FirebaseFirestore.instance
+                            .collection('foods')
+                            .doc(widget.foodid)
+                            .update({"status": 1});
+                      },
+                      child: Icon(Icons.done_rounded)),
+                ],
+              ),
             ],
           ),
         ),
