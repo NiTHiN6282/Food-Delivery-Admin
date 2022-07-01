@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
@@ -7,10 +8,10 @@ import 'package:flutter/material.dart';
 class FoodDetails extends StatefulWidget {
   String name;
   String img;
-  String price;
+  double price;
   String desc;
   String foodid;
-  String rating;
+  double rating;
   int itemIndex;
 
   FoodDetails({
@@ -56,9 +57,9 @@ class _FoodDetailsState extends State<FoodDetails> {
               Container(
                 width: 150,
                 height: 150,
-                child: Image(
+                child: CachedNetworkImage(
+                  imageUrl: widget.img,
                   fit: BoxFit.cover,
-                  image: NetworkImage(widget.img),
                 ),
               ),
               Text("Item price : ${widget.price.toString()}"),

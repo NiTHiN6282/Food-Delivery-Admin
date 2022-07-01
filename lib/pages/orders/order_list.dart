@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:fooddeliveryadmin/data.dart';
 import 'package:fooddeliveryadmin/pages/orders/order_details.dart';
@@ -67,8 +68,8 @@ class _OrderListState extends State<OrderList> {
                               SizedBox(
                                 width: 15,
                               ),
-                              Image.network(
-                                orderList[index]['img'],
+                              CachedNetworkImage(
+                                imageUrl: orderList[index]['img'],
                                 height: 70,
                                 width: 70,
                                 fit: BoxFit.cover,

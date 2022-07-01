@@ -6,6 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:liquid_progress_indicator/liquid_progress_indicator.dart';
 
 class AddFood extends StatefulWidget {
   const AddFood({Key? key}) : super(key: key);
@@ -24,6 +25,7 @@ class _AddFoodState extends State<AddFood> {
   TextEditingController itemDescController = TextEditingController();
   TextEditingController itemPriceController = TextEditingController();
   final _addproductFormKey = GlobalKey<FormState>();
+  double _progress = 0.0;
 
   @override
   void initState() {
@@ -45,7 +47,7 @@ class _AddFoodState extends State<AddFood> {
             children: [
               Container(
                 alignment: Alignment.center,
-                padding: EdgeInsets.only(top: 10, bottom: 10),
+                padding: EdgeInsets.only(top: 10, bottom: 50),
                 child: Form(
                   key: _addproductFormKey,
                   child: Column(
@@ -59,13 +61,31 @@ class _AddFoodState extends State<AddFood> {
                       ),
                       Container(
                         width: scrWid / 1.3,
-                        height: scrHei / 15,
+                        // height: scrHei / 15,
                         child: TextFormField(
                           controller: itemNameController,
                           decoration: InputDecoration(
-                              hintText: "Item Name",
-                              border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(12))),
+                            hintText: "Item Name",
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12)),
+                            enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12)),
+                            disabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12)),
+                            errorBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12)),
+                            focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12)),
+                            focusedErrorBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12)),
+                          ),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return "required";
+                            } else {
+                              return null;
+                            }
+                          },
                         ),
                       ),
                       SizedBox(
@@ -73,13 +93,31 @@ class _AddFoodState extends State<AddFood> {
                       ),
                       Container(
                         width: scrWid / 1.3,
-                        height: scrHei / 15,
+                        // height: scrHei / 15,
                         child: TextFormField(
                           controller: itemDescController,
                           decoration: InputDecoration(
-                              hintText: "Item Description",
-                              border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(12))),
+                            hintText: "Item Description",
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12)),
+                            enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12)),
+                            disabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12)),
+                            errorBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12)),
+                            focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12)),
+                            focusedErrorBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12)),
+                          ),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return "required";
+                            } else {
+                              return null;
+                            }
+                          },
                         ),
                       ),
                       SizedBox(
@@ -87,15 +125,31 @@ class _AddFoodState extends State<AddFood> {
                       ),
                       Container(
                         width: scrWid / 1.3,
-                        height: scrHei / 15,
+                        // height: scrHei / 15,
                         child: TextFormField(
                           controller: itemPriceController,
                           decoration: InputDecoration(
                             hintText: "Item Price",
                             border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12),
-                            ),
+                                borderRadius: BorderRadius.circular(12)),
+                            enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12)),
+                            disabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12)),
+                            errorBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12)),
+                            focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12)),
+                            focusedErrorBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12)),
                           ),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return "required";
+                            } else {
+                              return null;
+                            }
+                          },
                         ),
                       ),
                       SizedBox(
@@ -103,13 +157,31 @@ class _AddFoodState extends State<AddFood> {
                       ),
                       Container(
                         width: scrWid / 1.3,
-                        height: scrHei / 15,
+                        // height: scrHei / 15,
                         child: TextFormField(
                           controller: itemRatingController,
                           decoration: InputDecoration(
-                              hintText: "Item Rating",
-                              border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(12))),
+                            hintText: "Item Rating",
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12)),
+                            enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12)),
+                            disabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12)),
+                            errorBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12)),
+                            focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12)),
+                            focusedErrorBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12)),
+                          ),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return "required";
+                            } else {
+                              return null;
+                            }
+                          },
                         ),
                       ),
                       SizedBox(
@@ -123,6 +195,8 @@ class _AddFoodState extends State<AddFood> {
                             setState(() {
                               imageFile = File(pickedFile.path);
                             });
+                          } else {
+                            return null;
                           }
                         },
                         child: imageFile != null
@@ -188,41 +262,102 @@ class _AddFoodState extends State<AddFood> {
                       SizedBox(
                         height: scrHei / 30,
                       ),
+                      _progress != 0.0
+                          ? Container(
+                              height: 40,
+                              width: 250,
+                              child: LiquidLinearProgressIndicator(
+                                backgroundColor: Colors.grey[350],
+                                borderColor: Colors.black,
+                                borderWidth: 1,
+                                borderRadius: 12,
+                                value: _progress / 100,
+                                valueColor: AlwaysStoppedAnimation(
+                                    Colors.green.shade200),
+                                center: Text(
+                                    "Uploading Data ${(_progress.toInt()).toString()}%"),
+                              ),
+                            )
+                          : const SizedBox(),
+                      SizedBox(
+                        height: scrHei / 30,
+                      ),
                       GestureDetector(
                         onTap: () {
                           print("Add Clicked");
-                          if (imageFile == null) {
-                            showsnackbar("Add  image");
-                          } else if (_addproductFormKey.currentState!
-                              .validate()) {
-                            String fileName = DateTime.now().toString();
+                          if (_addproductFormKey.currentState!.validate()) {
+                            if (imageFile == null) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                      behavior: SnackBarBehavior.floating,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(12),
+                                      ),
+                                      margin: EdgeInsets.only(
+                                          left: 20, bottom: 20, right: 20),
+                                      dismissDirection:
+                                          DismissDirection.horizontal,
+                                      content: Text("Please add image"),
+                                      duration: Duration(seconds: 1)));
+                            } else if (_addproductFormKey.currentState!
+                                .validate()) {
+                              String fileName = DateTime.now().toString();
 
-                            var ref = FirebaseStorage.instance
-                                .ref()
-                                .child('foods/$fileName');
+                              var ref = FirebaseStorage.instance
+                                  .ref()
+                                  .child('foods/$fileName');
 
-                            UploadTask uploadTask =
-                                ref.putFile(File(imageFile!.path));
-                            uploadTask.then((res) async {
-                              url = (await ref.getDownloadURL()).toString();
-                            }).then((value) => FirebaseFirestore.instance
-                                    .collection('foods')
-                                    .doc(foodid)
-                                    .set({
-                                  "recommended": recommend,
-                                  "name": itemNameController.text,
-                                  "description": itemDescController.text,
-                                  "price": itemPriceController.text,
-                                  "image": url,
-                                  "foodid": foodid,
-                                  "fileName": fileName,
-                                  "rating": itemRatingController.text,
-                                  "status": 1,
-                                  "date": DateTime.now().toString(),
-                                }).then((value) {
-                                  showsnackbar("Product Added Successfully");
-                                  Navigator.pop(context);
-                                }));
+                              UploadTask uploadTask =
+                                  ref.putFile(File(imageFile!.path));
+                              uploadTask.snapshotEvents.listen((event) {
+                                setState(() {
+                                  _progress =
+                                      (event.bytesTransferred.toDouble() /
+                                          event.totalBytes.toDouble() *
+                                          100);
+                                  print("Progress Value : $_progress");
+                                });
+                              });
+                              uploadTask.then((res) async {
+                                url = (await ref.getDownloadURL()).toString();
+                              }).then((value) => FirebaseFirestore.instance
+                                      .collection('foods')
+                                      .add({
+                                    "recommended": recommend,
+                                    "name": itemNameController.text,
+                                    "description": itemDescController.text,
+                                    "price":
+                                        double.parse(itemPriceController.text),
+                                    "image": url,
+                                    "fileName": fileName,
+                                    "rating":
+                                        double.parse(itemRatingController.text),
+                                    "status": 1,
+                                    "date": DateTime.now(),
+                                  }).then((value) {
+                                    value.update({
+                                      "foodid": value.id,
+                                    });
+
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                        SnackBar(
+                                            behavior: SnackBarBehavior.floating,
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(12),
+                                            ),
+                                            margin: EdgeInsets.only(
+                                                left: 20,
+                                                bottom: 20,
+                                                right: 20),
+                                            dismissDirection:
+                                                DismissDirection.horizontal,
+                                            content: Text(
+                                                "Product added Sucessfull"),
+                                            duration: Duration(seconds: 1)));
+                                    Navigator.pop(context);
+                                  }));
+                            }
                           }
                         },
                         child: Container(
@@ -244,6 +379,9 @@ class _AddFoodState extends State<AddFood> {
                             ],
                           ),
                         ),
+                      ),
+                      SizedBox(
+                        height: scrHei / 30,
                       ),
                     ],
                   ),

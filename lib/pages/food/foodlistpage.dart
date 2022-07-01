@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -43,9 +44,11 @@ class _FoodListPageState extends State<FoodListPage> {
                                 desc: snapshot.data!.docs[index]['description'],
                                 img: snapshot.data!.docs[index]['image'],
                                 name: snapshot.data!.docs[index]['name'],
-                                price: snapshot.data!.docs[index]['price'],
+                                price: snapshot.data!.docs[index]['price']
+                                    .toDouble(),
                                 foodid: snapshot.data!.docs[index]['foodid'],
-                                rating: snapshot.data!.docs[index]['rating'],
+                                rating: snapshot.data!.docs[index]['rating']
+                                    .toDouble(),
                                 itemIndex: index,
                               ),
                             ));
@@ -53,8 +56,8 @@ class _FoodListPageState extends State<FoodListPage> {
                       },
                       child: Card(
                         child: ListTile(
-                          leading: Image.network(
-                            snapshot.data!.docs[index]['image'],
+                          leading: CachedNetworkImage(
+                            imageUrl: snapshot.data!.docs[index]['image'],
                             width: scrWid / 5,
                             height: scrHei / 12,
                             fit: BoxFit.cover,
@@ -65,19 +68,32 @@ class _FoodListPageState extends State<FoodListPage> {
                           subtitle: Text(
                               snapshot.data!.docs[index]['price'].toString()),
                           trailing: InkWell(
-                              onTap: () {
-                                FirebaseFirestore.instance
-                                    .collection('foods')
-                                    .doc(snapshot.data!.docs[index]['foodid'])
-                                    .delete()
-                                    .then((value) => showsnackbar("Removed"));
-                                FirebaseStorage.instance
-                                    .ref()
-                                    .child(
-                                        'foods/${snapshot.data!.docs[index]['fileName']}')
-                                    .delete();
-                              },
-                              child: Icon(Icons.delete)),
+                            onTap: () {
+                              FirebaseFirestore.instance
+                                  .collection('foods')
+                                  .doc(snapshot.data!.docs[index]['foodid'])
+                                  .delete()
+                                  .then((value) => ScaffoldMessenger.of(context)
+                                      .showSnackBar(SnackBar(
+                                          behavior: SnackBarBehavior.floating,
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(12),
+                                          ),
+                                          margin: EdgeInsets.only(
+                                              left: 20, bottom: 20, right: 20),
+                                          dismissDirection:
+                                              DismissDirection.horizontal,
+                                          content: Text("Item Removed"),
+                                          duration: Duration(seconds: 1))));
+                              FirebaseStorage.instance
+                                  .ref()
+                                  .child(
+                                      'foods/${snapshot.data!.docs[index]['fileName']}')
+                                  .delete();
+                            },
+                            child: Icon(Icons.delete),
+                          ),
                         ),
                       ),
                     );

@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 class OrderDetails extends StatefulWidget {
@@ -43,8 +44,8 @@ class _OrderDetailsState extends State<OrderDetails> {
             SizedBox(
               height: 20,
             ),
-            Image.network(
-              widget.img,
+            CachedNetworkImage(
+              imageUrl: widget.img,
               width: 70,
               height: 70,
               fit: BoxFit.cover,
